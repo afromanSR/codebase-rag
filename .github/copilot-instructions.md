@@ -6,7 +6,7 @@
 
 **Problem it solves**: AI coding assistants re-read the same files every conversation, burning tokens. This tool indexes the entire workspace once, then serves precise, relevant code chunks on demand — reducing token usage by ~80-90%.
 
-**Repository**: `afromankenya/codebase-rag`
+**Repository**: `afromanSR/codebase-rag`
 **License**: MIT (open source)
 
 ---

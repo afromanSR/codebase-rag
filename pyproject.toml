@@ -33,9 +33,9 @@ dependencies = [
 codebase-rag = "codebase_rag.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/afromankenya/codebase-rag"
-Repository = "https://github.com/afromankenya/codebase-rag"
-Issues = "https://github.com/afromankenya/codebase-rag/issues"
+Homepage = "https://github.com/afromanSR/codebase-rag"
+Repository = "https://github.com/afromanSR/codebase-rag"
+Issues = "https://github.com/afromanSR/codebase-rag/issues"
 
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
@@ -45,4 +45,5 @@ build-backend = "uv_build"
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.24",
+    "ruff>=0.8",
 ]
