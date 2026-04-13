@@ -86,9 +86,7 @@ def index(full: bool, repo: str | None) -> None:
     click.echo(f"Indexing workspace: {workspace}")
     stats = index_workspace(workspace_path=workspace, config=config, full=full)
 
-    click.echo(
-        f"\nIndexed {stats.repos_indexed} repo(s) in {stats.duration_seconds:.1f}s"
-    )
+    click.echo(f"\nIndexed {stats.repos_indexed} repo(s) in {stats.duration_seconds:.1f}s")
     click.echo(f"Files processed: {stats.total_files}")
     click.echo(f"Chunks created: {stats.total_chunks}")
     for repo_stat in stats.repo_stats:
@@ -109,9 +107,7 @@ def search(query: str, repo: str | None, limit: int) -> None:
 
     workspace = _get_workspace()
     config = load_config(workspace)
-    engine = SearchEngine(
-        workspace_path=workspace, embedding_model=config.embedding_model
-    )
+    engine = SearchEngine(workspace_path=workspace, embedding_model=config.embedding_model)
 
     repos = [repo] if repo else None
     results = engine.search(query=query, repos=repos, limit=limit)
@@ -122,12 +118,9 @@ def search(query: str, repo: str | None, limit: int) -> None:
 
     for index_number, result in enumerate(results, start=1):
         click.echo(f"\n--- Result {index_number} (score: {result.score:.3f}) ---")
+        click.echo(f"File: {result.file_path} (lines {result.start_line}-{result.end_line})")
         click.echo(
-            f"File: {result.file_path} (lines {result.start_line}-{result.end_line})"
-        )
-        click.echo(
-            f"Repo: {result.repo_name} | Language: {result.language} | "
-            f"Type: {result.chunk_type}"
+            f"Repo: {result.repo_name} | Language: {result.language} | Type: {result.chunk_type}"
         )
         if result.symbol_name:
             click.echo(f"Symbol: {result.symbol_name}")

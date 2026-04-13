@@ -230,9 +230,7 @@ def test_fallback_chunker_sliding_window(tmp_path: Path) -> None:
     content = "".join(lines)
     file_path.write_text(content, encoding="utf-8")
 
-    chunks = chunk_fallback(
-        file_path, content, "repo", tmp_path, max_tokens=20, overlap_tokens=8
-    )
+    chunks = chunk_fallback(file_path, content, "repo", tmp_path, max_tokens=20, overlap_tokens=8)
 
     assert len(chunks) > 1
     for chunk in chunks:
@@ -276,9 +274,7 @@ Content
         ("file.yml", chunk_yaml),
     ],
 )
-def test_get_chunker_returns_correct_type(
-    tmp_path: Path, filename: str, expected: object
-) -> None:
+def test_get_chunker_returns_correct_type(tmp_path: Path, filename: str, expected: object) -> None:
     chunker = get_chunker(tmp_path / filename, "repo", tmp_path)
     assert chunker == expected
 
@@ -295,9 +291,7 @@ def test_chunk_file_reads_and_chunks(tmp_path: Path) -> None:
         encoding="utf-8",
     )
 
-    chunks = chunk_file(
-        file_path=file_path, repo_name="repo", repo_path=repo_path, max_tokens=512
-    )
+    chunks = chunk_file(file_path=file_path, repo_name="repo", repo_path=repo_path, max_tokens=512)
 
     assert len(chunks) == 1
     assert chunks[0].chunk_type == "function"

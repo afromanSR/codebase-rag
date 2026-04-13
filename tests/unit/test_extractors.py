@@ -156,21 +156,21 @@ def test_extract_docker(tmp_path: Path) -> None:
     (tmp_path / "docker-compose.yml").write_text(
         textwrap.dedent(
             """\
-			version: "3.8"
-			services:
-			  app:
-			    image: php:8.2
-			    ports:
-			      - "8080:80"
-			    depends_on:
-			      - db
-			  db:
-			    image: mysql:8.0
-			    ports:
-			      - "3306:3306"
-			    environment:
-			      - MYSQL_ROOT_PASSWORD=secret
-			"""
+                        version: "3.8"
+                        services:
+                            app:
+                                image: php:8.2
+                                ports:
+                                    - "8080:80"
+                                depends_on:
+                                    - db
+                            db:
+                                image: mysql:8.0
+                                ports:
+                                    - "3306:3306"
+                                environment:
+                                    - MYSQL_ROOT_PASSWORD=secret
+                        """
         ),
         encoding="utf-8",
     )
@@ -214,10 +214,10 @@ def test_extract_structured_laravel(tmp_path: Path) -> None:
     (tmp_path / "docker-compose.yml").write_text(
         textwrap.dedent(
             """\
-			services:
-			  app:
-			    image: php:8.2
-			"""
+                        services:
+                            app:
+                                image: php:8.2
+                        """
         ),
         encoding="utf-8",
     )
@@ -236,10 +236,10 @@ def test_extract_structured_unknown(tmp_path: Path) -> None:
     (tmp_path / "docker-compose.yml").write_text(
         textwrap.dedent(
             """\
-			services:
-			  app:
-			    image: php:8.2
-			"""
+                        services:
+                            app:
+                                image: php:8.2
+                        """
         ),
         encoding="utf-8",
     )

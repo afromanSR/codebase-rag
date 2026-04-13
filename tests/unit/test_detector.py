@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 from codebase_rag.indexer.detector import RepoProfile, detect_stack
 
 

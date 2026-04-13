@@ -12,7 +12,7 @@ from codebase_rag.indexer.core import (
     index_workspace,
     walk_files,
 )
-from codebase_rag.store.lance import LanceStore, VECTOR_DIM
+from codebase_rag.store.lance import VECTOR_DIM, LanceStore
 
 
 def _make_fake_embeddings(count: int) -> list[list[float]]:
@@ -44,9 +44,7 @@ def workspace_with_repos(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
 
-    (repo / "go.mod").write_text(
-        "module example.com/backend\n\ngo 1.21\n", encoding="utf-8"
-    )
+    (repo / "go.mod").write_text("module example.com/backend\n\ngo 1.21\n", encoding="utf-8")
     (repo / "main.go").write_text(
         'package main\n\nfunc main() {\n    println("hello")\n}\n',
         encoding="utf-8",
@@ -57,9 +55,7 @@ def workspace_with_repos(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
 
-    (repo / ".env.example").write_text(
-        "DB_HOST=localhost\nDB_PORT=5432\n", encoding="utf-8"
-    )
+    (repo / ".env.example").write_text("DB_HOST=localhost\nDB_PORT=5432\n", encoding="utf-8")
 
     return tmp_path
 
@@ -120,9 +116,7 @@ def test_index_repo_creates_chunks(mock_embed, workspace_with_repos: Path) -> No
 
 
 @patch("codebase_rag.indexer.core.embed_chunks")
-def test_incremental_index_skips_unchanged(
-    mock_embed, workspace_with_repos: Path
-) -> None:
+def test_incremental_index_skips_unchanged(mock_embed, workspace_with_repos: Path) -> None:
     """Second index run skips files that haven't changed."""
     repo = workspace_with_repos / "my-backend"
     config = Config(
@@ -150,9 +144,7 @@ def test_index_workspace_end_to_end(mock_embed, workspace_with_repos: Path) -> N
     )
     mock_embed.side_effect = lambda chunks, model: _make_fake_embeddings(len(chunks))
 
-    stats = index_workspace(
-        workspace_path=workspace_with_repos, config=config, full=True
-    )
+    stats = index_workspace(workspace_path=workspace_with_repos, config=config, full=True)
 
     assert stats.repos_indexed == 1
     assert stats.total_chunks > 0

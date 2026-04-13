@@ -37,7 +37,8 @@ class LanceStore:
     def __init__(self, workspace_path: str | Path, data_dir: str | Path | None = None):
         """
         Initialize store for a workspace.
-        - Compute workspace hash from absolute path: hashlib.sha256(str(path).encode()).hexdigest()[:16]
+                - Compute workspace hash from absolute path:
+                    hashlib.sha256(str(path).encode()).hexdigest()[:16]
         - data_dir defaults to env var CODEBASE_RAG_DATA_DIR or DEFAULT_DATA_DIR
         - Store path: data_dir / "indexes" / workspace_hash
         - Create directories if needed
@@ -51,9 +52,7 @@ class LanceStore:
             if data_dir is not None
             else Path(os.getenv("CODEBASE_RAG_DATA_DIR", DEFAULT_DATA_DIR))
         )
-        self._store_path = (
-            base_data_dir.expanduser().resolve() / "indexes" / workspace_hash
-        )
+        self._store_path = base_data_dir.expanduser().resolve() / "indexes" / workspace_hash
         self._store_path.mkdir(parents=True, exist_ok=True)
 
         self.db = lancedb.connect(str(self._store_path))
@@ -97,9 +96,7 @@ class LanceStore:
                     language=str(chunk["language"]),
                     chunk_type=str(chunk["chunk_type"]),
                     symbol_name=(
-                        str(chunk["symbol_name"])
-                        if chunk.get("symbol_name") is not None
-                        else None
+                        str(chunk["symbol_name"]) if chunk.get("symbol_name") is not None else None
                     ),
                     file_mtime=float(chunk["file_mtime"]),
                     vector=[float(v) for v in embedding],
@@ -169,9 +166,7 @@ class LanceStore:
             repos = ", ".join(self._sql_quote(repo) for repo in filter_repos)
             filters.append(f"repo_name IN ({repos})")
         if filter_languages:
-            languages = ", ".join(
-                self._sql_quote(language) for language in filter_languages
-            )
+            languages = ", ".join(self._sql_quote(language) for language in filter_languages)
             filters.append(f"language IN ({languages})")
         if filters:
             query = query.where(" AND ".join(filters))

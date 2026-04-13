@@ -248,9 +248,7 @@ def index_repo(
 
     chunks_by_file: dict[str, int] = {}
     for chunk in chunks:
-        chunks_by_file[chunk.abs_file_path] = (
-            chunks_by_file.get(chunk.abs_file_path, 0) + 1
-        )
+        chunks_by_file[chunk.abs_file_path] = chunks_by_file.get(chunk.abs_file_path, 0) + 1
 
     for path_key, path_obj in repo_files_map.items():
         stored_mtimes[path_key] = path_obj.stat().st_mtime
@@ -298,9 +296,7 @@ def index_workspace(
 
     repo_stats: list[RepoIndexStats] = []
     for repo_path in repos:
-        repo_stats.append(
-            index_repo(repo_path=repo_path, config=config, store=store, full=full)
-        )
+        repo_stats.append(index_repo(repo_path=repo_path, config=config, store=store, full=full))
 
     total_files = sum(stat.files_processed for stat in repo_stats)
     total_chunks = sum(stat.chunks_created for stat in repo_stats)

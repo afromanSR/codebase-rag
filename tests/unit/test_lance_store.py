@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from codebase_rag.store.lance import LanceStore, VECTOR_DIM
+from codebase_rag.store.lance import VECTOR_DIM, LanceStore
 
 
 def make_chunks_and_embeddings(
@@ -116,9 +116,7 @@ def test_delete_repo(store: LanceStore) -> None:
 
 def test_get_stats(store: LanceStore) -> None:
     chunks_a, embeddings_a = make_chunks_and_embeddings(3, repo_name="repo-a")
-    chunks_b, embeddings_b = make_chunks_and_embeddings(
-        2, repo_name="repo-b", language="go"
-    )
+    chunks_b, embeddings_b = make_chunks_and_embeddings(2, repo_name="repo-b", language="go")
     store.upsert_chunks(chunks_a, embeddings_a)
     store.upsert_chunks(chunks_b, embeddings_b)
 

@@ -44,7 +44,8 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 - `refactor:` — Code change that neither fixes a bug nor adds a feature
 
 Examples:
-```
+
+```plaintext
 feat: add Ruby chunker
 fix: handle empty files in Go chunker
 docs: add Claude Desktop config example

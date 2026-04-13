@@ -25,9 +25,7 @@ class SearchResult:
 
 
 class SearchEngine:
-    def __init__(
-        self, workspace_path: str | Path, embedding_model: str = "nomic-embed-text"
-    ):
+    def __init__(self, workspace_path: str | Path, embedding_model: str = "nomic-embed-text"):
         self._store = LanceStore(workspace_path)
         self._embedding_model = embedding_model
 

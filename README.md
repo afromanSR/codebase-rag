@@ -10,7 +10,7 @@ Problem: AI coding assistants re-read the same files every conversation, burning
 
 Author: Samson Rwakabuguli
 
-GitHub: https://github.com/afromanSR/codebase-rag
+GitHub: <https://github.com/afromanSR/codebase-rag>
 
 ## How It Works
 
@@ -74,16 +74,16 @@ codebase-rag search "authentication flow"
 
 ```json
 {
-	"servers": {
-		"codebase-rag": {
-			"type": "stdio",
-			"command": "uvx",
-			"args": ["--from", "codebase-rag", "codebase-rag", "serve"],
-			"env": {
-				"CODEBASE_RAG_WORKSPACE": "${workspaceFolder}"
-			}
-		}
-	}
+ "servers": {
+  "codebase-rag": {
+   "type": "stdio",
+   "command": "uvx",
+   "args": ["--from", "codebase-rag", "codebase-rag", "serve"],
+   "env": {
+    "CODEBASE_RAG_WORKSPACE": "${workspaceFolder}"
+   }
+  }
+ }
 }
 ```
 
@@ -91,22 +91,22 @@ codebase-rag search "authentication flow"
 
 ```json
 {
-	"mcpServers": {
-		"codebase-rag": {
-			"command": "uvx",
-			"args": ["--from", "codebase-rag", "codebase-rag", "serve"],
-			"env": {
-				"CODEBASE_RAG_WORKSPACE": "/absolute/path/to/workspace"
-			}
-		}
-	}
+ "mcpServers": {
+  "codebase-rag": {
+   "command": "uvx",
+   "args": ["--from", "codebase-rag", "codebase-rag", "serve"],
+   "env": {
+    "CODEBASE_RAG_WORKSPACE": "/absolute/path/to/workspace"
+   }
+  }
+ }
 }
 ```
 
 ## CLI Reference
 
 | Command | Description |
-|---------|-------------|
+| ------- | ----------- |
 | `codebase-rag init` | Create `.copilot-rag.yaml` config and `.vscode/mcp.json` |
 | `codebase-rag index` | Index workspace (incremental by default) |
 | `codebase-rag index --full` | Force full re-index |
@@ -133,32 +133,32 @@ version: 1
 embedding_model: nomic-embed-text
 
 repos:
-	auto_discover: true    # Scan for git repos in workspace
+ auto_discover: true    # Scan for git repos in workspace
 
 index:
-	include:
-		- "**/*.php"
-		- "**/*.go"
-		- "**/*.ts"
-		- "**/*.vue"
-		- "**/*.md"
-		- "**/*.yaml"
-		- "**/*.json"
-	exclude:
-		- "**/vendor/**"
-		- "**/node_modules/**"
-		- "**/.git/**"
-		- "**/dist/**"
+ include:
+  - "**/*.php"
+  - "**/*.go"
+  - "**/*.ts"
+  - "**/*.vue"
+  - "**/*.md"
+  - "**/*.yaml"
+  - "**/*.json"
+ exclude:
+  - "**/vendor/**"
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/dist/**"
 
 chunking:
-	max_tokens: 512
-	overlap_tokens: 64
+ max_tokens: 512
+ overlap_tokens: 64
 ```
 
 ## Supported Stacks
 
 | Stack | Language | Detection |
-|-------|----------|-----------|
+| ----- | -------- | --------- |
 | Laravel | PHP | `composer.json` + `artisan` |
 | Generic PHP | PHP | `composer.json` |
 | Go (Chi) | Go | `go.mod` + `internal/server/` |

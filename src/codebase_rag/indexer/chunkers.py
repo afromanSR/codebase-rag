@@ -155,9 +155,7 @@ def chunk_php(
         r"^\s*(?:public|protected|private|static|final|abstract|\s)*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(",
         re.MULTILINE,
     )
-    function_pattern = re.compile(
-        r"^\s*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", re.MULTILINE
-    )
+    function_pattern = re.compile(r"^\s*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", re.MULTILINE)
     namespace_match = re.search(r"^\s*namespace\s+([^;]+);", content, re.MULTILINE)
     namespace_name = namespace_match.group(1).strip() if namespace_match else None
 
@@ -198,15 +196,10 @@ def chunk_php(
                 max_tokens=max_tokens,
             )
             for fallback_chunk in fallback_chunks:
-                fallback_chunk.start_line += (
-                    _line_number_at_offset(content, class_start) - 1
-                )
-                fallback_chunk.end_line += (
-                    _line_number_at_offset(content, class_start) - 1
-                )
+                fallback_chunk.start_line += _line_number_at_offset(content, class_start) - 1
+                fallback_chunk.end_line += _line_number_at_offset(content, class_start) - 1
                 fallback_chunk.id = (
-                    f"{repo_name}:{fallback_chunk.file_path}:"
-                    f"{fallback_chunk.start_line}"
+                    f"{repo_name}:{fallback_chunk.file_path}:{fallback_chunk.start_line}"
                 )
                 fallback_chunk.language = "php"
                 chunks.append(fallback_chunk)
@@ -272,12 +265,8 @@ def chunk_go(
     func_pattern = re.compile(
         r"^\s*func\s*(\([^)]+\)\s*)?([A-Za-z_][A-Za-z0-9_]*)\s*\(", re.MULTILINE
     )
-    struct_pattern = re.compile(
-        r"^\s*type\s+([A-Za-z_][A-Za-z0-9_]*)\s+struct\b", re.MULTILINE
-    )
-    package_match = re.search(
-        r"^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)\b", content, re.MULTILINE
-    )
+    struct_pattern = re.compile(r"^\s*type\s+([A-Za-z_][A-Za-z0-9_]*)\s+struct\b", re.MULTILINE)
+    package_match = re.search(r"^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)\b", content, re.MULTILINE)
     package_name = package_match.group(1) if package_match else None
 
     chunks: list[Chunk] = []
@@ -349,13 +338,9 @@ def chunk_typescript(
     chunks: list[Chunk] = []
     for index, match in enumerate(matches):
         start_offset = match.start()
-        end_offset = (
-            matches[index + 1].start() if index + 1 < len(matches) else len(content)
-        )
+        end_offset = matches[index + 1].start() if index + 1 < len(matches) else len(content)
         line_end = content.find("\n", start_offset)
-        first_line = content[
-            start_offset : (line_end if line_end != -1 else len(content))
-        ]
+        first_line = content[start_offset : (line_end if line_end != -1 else len(content))]
         if re.search(r"\bfunction\b", first_line):
             chunk_type = "function"
         elif re.search(r"\bclass\b", first_line):
@@ -488,23 +473,15 @@ def chunk_yaml(
 
     if is_docker_compose:
         services_match = next(
-            (
-                match
-                for match in top_level_matches
-                if match.group(1).strip() == "services"
-            ),
+            (match for match in top_level_matches if match.group(1).strip() == "services"),
             None,
         )
         if services_match:
             services_start = services_match.start()
-            next_top = [
-                m.start() for m in top_level_matches if m.start() > services_start
-            ]
+            next_top = [m.start() for m in top_level_matches if m.start() > services_start]
             services_end = min(next_top) if next_top else len(content)
             services_text = content[services_start:services_end]
-            service_pattern = re.compile(
-                r"^\s{2}([A-Za-z0-9_.-]+)\s*:\s*$", re.MULTILINE
-            )
+            service_pattern = re.compile(r"^\s{2}([A-Za-z0-9_.-]+)\s*:\s*$", re.MULTILINE)
             service_matches = list(service_pattern.finditer(services_text))
 
             for index, service_match in enumerate(service_matches):

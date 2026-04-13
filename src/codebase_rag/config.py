@@ -61,9 +61,7 @@ def load_config(workspace_path: str | Path) -> Config:
     try:
         raw = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
     except yaml.YAMLError as exc:
-        logger.warning(
-            "Failed to parse config %s: %s — using defaults", config_path, exc
-        )
+        logger.warning("Failed to parse config %s: %s — using defaults", config_path, exc)
         return Config()
 
     repos = raw.get("repos", {}) or {}

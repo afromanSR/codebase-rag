@@ -331,7 +331,7 @@ def _normalize_environment(raw_environment: Any) -> list[str]:
 
 def _normalize_depends_on(raw_depends_on: Any) -> list[str]:
     if isinstance(raw_depends_on, dict):
-        return [str(name) for name in raw_depends_on.keys()]
+        return [str(name) for name in raw_depends_on]
     if isinstance(raw_depends_on, list):
         return [str(item) for item in raw_depends_on]
     return []

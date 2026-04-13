@@ -36,9 +36,7 @@ def _get_engine():
 
     workspace = _get_workspace()
     config = load_config(workspace)
-    return SearchEngine(
-        workspace_path=workspace, embedding_model=config.embedding_model
-    )
+    return SearchEngine(workspace_path=workspace, embedding_model=config.embedding_model)
 
 
 @mcp.tool()
@@ -58,9 +56,7 @@ def rag_search(
     """
     try:
         engine = _get_engine()
-        results = engine.search(
-            query=query, repos=repos, filetypes=filetypes, limit=limit
-        )
+        results = engine.search(query=query, repos=repos, filetypes=filetypes, limit=limit)
 
         if not results:
             return "No results found. Make sure the workspace is indexed (codebase-rag index)."
@@ -96,9 +92,7 @@ def rag_lookup(category: str, repo: str) -> str:
         engine = _get_engine()
         data = engine.lookup(category=category, repo=repo)
         if data is None:
-            return (
-                f"No {category} data found for repo '{repo}'. Make sure it is indexed."
-            )
+            return f"No {category} data found for repo '{repo}'. Make sure it is indexed."
         return json.dumps(data, indent=2)
     except Exception as exc:
         logger.exception("rag_lookup failed")
@@ -117,11 +111,7 @@ def rag_summary(repo: str | None = None) -> str:
         data = engine.summary(repo=repo)
 
         if data is None:
-            message = (
-                f"No summary found for repo '{repo}'."
-                if repo
-                else "No summaries found."
-            )
+            message = f"No summary found for repo '{repo}'." if repo else "No summaries found."
             return f"{message} Make sure the workspace is indexed (codebase-rag index)."
 
         return json.dumps(data, indent=2)

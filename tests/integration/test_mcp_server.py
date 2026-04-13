@@ -10,9 +10,7 @@ def _registered_tool_names(mcp_obj: object) -> set[str]:
     list_tools = getattr(mcp_obj, "list_tools", None)
     if callable(list_tools):
         tools = asyncio.run(list_tools())
-        return {
-            getattr(tool, "name", "") for tool in tools if getattr(tool, "name", "")
-        }
+        return {getattr(tool, "name", "") for tool in tools if getattr(tool, "name", "")}
 
     tool_manager = getattr(mcp_obj, "_tool_manager", None)
     if tool_manager is not None:
