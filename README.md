@@ -33,6 +33,21 @@ Workspace files
 - Incremental indexing (only re-indexes changed files)
 - Works with any MCP client: VS Code Copilot, Claude Desktop, Cline, Continue, Cursor, Windsurf, Zed
 
+## 📚 Documentation
+
+For detailed guides beyond this README:
+
+| Topic | Link |
+| ----- | ---- |
+| Architecture & Data Flow | [docs/architecture.md](docs/architecture.md) |
+| Full Configuration Reference | [docs/configuration.md](docs/configuration.md) |
+| MCP Tools Reference | [docs/mcp-tools.md](docs/mcp-tools.md) |
+| Supported Languages & Frameworks | [docs/supported-stacks.md](docs/supported-stacks.md) |
+| Client Setup Guides | [docs/clients/](docs/clients/) |
+| Troubleshooting | [docs/troubleshooting.md](docs/troubleshooting.md) |
+| Performance | [docs/performance.md](docs/performance.md) |
+| Adding New Languages | [docs/development.md](docs/development.md) |
+
 ## Prerequisites
 
 - Python 3.11+
