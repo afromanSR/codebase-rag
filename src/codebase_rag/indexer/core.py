@@ -203,7 +203,7 @@ def index_repo(
     repo_file_keys = set(repo_files_map.keys())
     tracked_repo_files = {
         path_key
-        for path_key in stored_mtimes.keys()
+        for path_key in stored_mtimes
         if str(repo) == path_key or path_key.startswith(f"{repo}/")
     }
 

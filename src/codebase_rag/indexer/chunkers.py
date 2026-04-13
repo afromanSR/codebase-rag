@@ -204,7 +204,10 @@ def chunk_php(
                 fallback_chunk.end_line += (
                     _line_number_at_offset(content, class_start) - 1
                 )
-                fallback_chunk.id = f"{repo_name}:{fallback_chunk.file_path}:{fallback_chunk.start_line}"
+                fallback_chunk.id = (
+                    f"{repo_name}:{fallback_chunk.file_path}:"
+                    f"{fallback_chunk.start_line}"
+                )
                 fallback_chunk.language = "php"
                 chunks.append(fallback_chunk)
             continue
