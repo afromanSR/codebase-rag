@@ -43,7 +43,7 @@ def _estimate_tokens(text: str) -> int:
 
 
 def _split_text_by_tokens(text: str, max_tokens: int) -> list[str]:
-    """Split a string into pieces each under max_tokens, respecting line boundaries when possible."""
+    """Split text into pieces under max_tokens, respecting line boundaries when possible."""
     if _estimate_tokens(text) <= max_tokens:
         return [text]
 
