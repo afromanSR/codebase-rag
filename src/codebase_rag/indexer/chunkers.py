@@ -42,6 +42,77 @@ def _estimate_tokens(text: str) -> int:
     return len(text) // 4
 
 
+def _split_text_by_tokens(text: str, max_tokens: int) -> list[str]:
+    """Split text into pieces under max_tokens, respecting line boundaries when possible."""
+    if _estimate_tokens(text) <= max_tokens:
+        return [text]
+
+    max_chars = max(max_tokens * 4, 1)
+    pieces: list[str] = []
+    lines = text.splitlines(keepends=True) or [text]
+    buf = ""
+    buf_tokens = 0
+
+    def _flush() -> None:
+        nonlocal buf, buf_tokens
+        if buf:
+            pieces.append(buf)
+            buf = ""
+            buf_tokens = 0
+
+    for line in lines:
+        line_tokens = _estimate_tokens(line) or 1
+        if line_tokens > max_tokens:
+            _flush()
+            for start in range(0, len(line), max_chars):
+                pieces.append(line[start : start + max_chars])
+            continue
+        if buf_tokens + line_tokens > max_tokens and buf:
+            _flush()
+        buf += line
+        buf_tokens += line_tokens
+    _flush()
+    return pieces or [text]
+
+
+def _enforce_max_tokens(chunks: list[Chunk], max_tokens: int) -> list[Chunk]:
+    """Split any chunk whose estimated tokens exceed max_tokens into sub-chunks."""
+    if max_tokens <= 0:
+        return chunks
+    result: list[Chunk] = []
+    for chunk in chunks:
+        if _estimate_tokens(chunk.text) <= max_tokens:
+            result.append(chunk)
+            continue
+        pieces = _split_text_by_tokens(chunk.text, max_tokens)
+        line_span = max(chunk.end_line - chunk.start_line + 1, 1)
+        per_piece = max(line_span // max(len(pieces), 1), 1)
+        for i, piece_text in enumerate(pieces):
+            sub_start = chunk.start_line + i * per_piece
+            sub_end = (
+                chunk.start_line + (i + 1) * per_piece - 1
+                if i < len(pieces) - 1
+                else chunk.end_line
+            )
+            sub_id = f"{chunk.id}#part{i}" if i > 0 else chunk.id
+            result.append(
+                Chunk(
+                    id=sub_id,
+                    text=piece_text,
+                    repo_name=chunk.repo_name,
+                    file_path=chunk.file_path,
+                    abs_file_path=chunk.abs_file_path,
+                    start_line=sub_start,
+                    end_line=max(sub_end, sub_start),
+                    language=chunk.language,
+                    chunk_type=chunk.chunk_type,
+                    symbol_name=chunk.symbol_name,
+                    file_mtime=chunk.file_mtime,
+                )
+            )
+    return result
+
+
 def _language_for_file(file_path: Path) -> str:
     return _LANGUAGE_BY_SUFFIX.get(file_path.suffix.lower(), "text")
 
@@ -618,6 +689,7 @@ def chunk_file(
         overlap_tokens=overlap_tokens,
     )
     chunks = chunker(path, content, repo_name, repo_root, max_tokens)
+    chunks = _enforce_max_tokens(chunks, max_tokens)
     for chunk in chunks:
         chunk.file_mtime = file_mtime
     logger.debug("Chunked file %s into %d chunks", path, len(chunks))
